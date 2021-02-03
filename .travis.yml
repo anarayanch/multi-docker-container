@@ -15,9 +15,9 @@ after_success:
   - docker build -t arun/multi-nginx ./nginx
   - docker build -t arun/multi-server ./server
   - docker build -t arun/multi-worker ./worker
-  # Log in to the docker CLI
+  # Log in to the docker CLI- This command will pass Docker_Password to docker login command and taking DockerID from Travis CI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub
+  # Take those images and push them to docker hub using docker Id and password From Env variable from Travis CI
   - docker push arun/multi-client
   - docker push arun/multi-nginx
   - docker push arun/multi-server
