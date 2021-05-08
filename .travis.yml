@@ -15,10 +15,23 @@ after_success:
   - docker build -t arun/multi-nginx ./nginx
   - docker build -t arun/multi-server ./server
   - docker build -t arun/multi-worker ./worker
-  # Log in to the docker CLI- This command will pass Docker_Password to docker login command and taking DockerID from Travis CI
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub using docker Id and password From Env variable from Travis CI
+  # Take all multi  images and push them to docker hub
   - docker push arun/multi-client
   - docker push arun/multi-nginx
   - docker push arun/multi-server
   - docker push arun/multi-worker
+
+ ## Deploying multi container to AWS 
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
